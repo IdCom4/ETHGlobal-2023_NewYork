@@ -27,7 +27,7 @@
  *    https://nuxt.com/docs/api/composables/use-fetch#return-values
  */
 
-import { AlertModes, DEFAULT_REQUEST_ERROR, HTTP_METHODS } from '@/types/constants'
+import { AlertModes, DEFAULT_REQUEST_ERROR, HTTP_METHODS } from '@/assets/ts/enums'
 
 export const useRequest = () => ({
   /**

@@ -5,9 +5,7 @@
     <navbar />
     <!-- pages -->
     <NuxtPage />
-    <vmc-footer />
-    <bottombar-center book-link="/centres/reservation" />
-    <rgpd-consent />
+    <eth-footer />
   </section>
 </template>
 

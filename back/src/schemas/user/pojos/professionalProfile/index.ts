@@ -1,5 +1,0 @@
-export * from './professional-profile'
-export * from './mission-professional-notification-preferences'
-export * from './history'
-export * from './company'
-export * from './professional-payment-data'

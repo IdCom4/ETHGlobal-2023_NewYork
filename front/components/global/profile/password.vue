@@ -4,9 +4,9 @@
       <label for="password">Mot de passe actuel</label>
       <input type="password" name="password" placeholder="****" disabled /><fa class="password__component--icon" :icon="['far', 'pen-to-square']" />
     </div>
-    <vmc-modal :is-open="isModalPasswordOpen" title="Modification de votre mot de passe" @close="closeModalPassword">
+    <eth-modal :is-open="isModalPasswordOpen" title="Modification de votre mot de passe" @close="closeModalPassword">
       <div class="modalPassword__input">
-        <vmc-input
+        <eth-input
           v-model="currentPassword"
           :type="passwordData[2].type"
           label="Mot de passe actuel"
@@ -15,7 +15,7 @@
           @icon-click="() => show_password(2)"
           @input="clearPasswordError"
         />
-        <vmc-input
+        <eth-input
           v-model="newPassword"
           :type="passwordData[0].type"
           label="Nouveau mot de passe"
@@ -26,7 +26,7 @@
           @icon-click="() => show_password(0)"
           @input="clearPasswordError"
         />
-        <vmc-input
+        <eth-input
           v-model="newPasswordConfirmation"
           error-grow
           :type="passwordData[1].type"
@@ -50,12 +50,12 @@
         <button class="button btn-modal btn btn_call-to-action" @click="updatePassword">Modifier</button>
         <button class="button btn_denied" @click="closeModalPassword">Annuler</button>
       </div>
-    </vmc-modal>
+    </eth-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { InputTypes, AlertModes } from '@/types/constants'
+import { InputTypes, AlertModes } from '@/assets/ts/enums'
 
 const isModalPasswordOpen = ref<boolean>(false)
 

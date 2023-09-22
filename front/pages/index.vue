@@ -2,8 +2,6 @@
   <div></div>
 </template>
 
-<script lang="ts" setup>
-useRouter().push('/centres')
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss" scoped></style>

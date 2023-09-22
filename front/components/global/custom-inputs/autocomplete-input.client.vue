@@ -2,7 +2,7 @@
   <section class="autocomplete-input">
     <div class="input-container">
       <!-- SEARCH INPUT -->
-      <vmc-input
+      <eth-input
         v-model="search"
         :placeholder="placeholder"
         :label="label"
@@ -53,7 +53,8 @@
 </template>
 
 <script lang="ts" setup>
-import { KeyNames, SelectedOptionStyles } from '@/types/constants'
+import { KeyNames, SelectedOptionStyles } from '@/assets/ts/enums'
+
 
 const emit = defineEmits(['update:modelValue', 'input'])
 /* eslint-disable prettier/prettier */

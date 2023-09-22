@@ -1,6 +1,0 @@
-export * from './detailingboxEquipment'
-export * from './detailingboxPrestations'
-export * from './mecaboxEquipment'
-export * from './mecaboxPrestations'
-export * from './washboxEquipment'
-export * from './washboxPrestations'

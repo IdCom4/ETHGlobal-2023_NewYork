@@ -7,7 +7,7 @@
   </tracking-section>
   <section v-else class="register-modal">
     <h3>Créer un compte</h3>
-    <vmc-input
+    <eth-input
       v-model="registerInformations.name"
       type="text"
       :modal-style="true"
@@ -19,7 +19,7 @@
       @input="testFuncWithoutNewErrorDisplay('name')"
     />
 
-    <vmc-input
+    <eth-input
       v-model="registerInformations.lastName"
       type="text"
       :modal-style="true"
@@ -30,7 +30,7 @@
       @blur="registerErrors.lastName.testFunc"
       @input="testFuncWithoutNewErrorDisplay('lastName')"
     />
-    <vmc-input
+    <eth-input
       v-model="registerInformations.email"
       type="text"
       :modal-style="true"
@@ -42,7 +42,7 @@
       @input="testFuncWithoutNewErrorDisplay('email')"
     />
 
-    <vmc-input
+    <eth-input
       v-model="registerInformations.phone"
       type="tel"
       :modal-style="true"
@@ -53,7 +53,7 @@
       @blur="registerErrors.phone.testFunc"
       @input="testFuncWithoutNewErrorDisplay('phone')"
     />
-    <vmc-input
+    <eth-input
       v-model="registerInformations.password"
       :type="passwordShow.regular ? InputTypes.TEXT : InputTypes.PASSWORD"
       :modal-style="true"
@@ -67,7 +67,7 @@
       @blur="registerErrors.password.testFunc"
       @input="testFuncWithoutNewErrorDisplay('password')"
     />
-    <vmc-input
+    <eth-input
       v-model="registerInformations.confirmPassword"
       :type="passwordShow.confirm ? InputTypes.TEXT : InputTypes.PASSWORD"
       :modal-style="true"
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import { InputTypes } from '@/types/constants'
+import { InputTypes } from '@/assets/ts/enums'
 
 interface IRegisterPayload {
   name: string

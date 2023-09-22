@@ -1,9 +1,9 @@
 <template>
-  <vmc-modal :is-open="openLoginModal" max-width="500px" @close="closeModalLogin">
+  <eth-modal :is-open="openLoginModal" max-width="500px" @close="closeModalLogin">
     <div v-if="modalState === 'login'" class="modal-login">
       <div>
         <h3>CONNEXION</h3>
-        <vmc-input
+        <eth-input
           v-model="formValues.email"
           type="text"
           :modal-style="true"
@@ -13,7 +13,7 @@
         />
       </div>
       <div>
-        <vmc-input
+        <eth-input
           v-model="formValues.password"
           :type="passwordData.type"
           :modal-style="true"
@@ -38,11 +38,11 @@
     </div>
     <forgot-password-modal-content v-if="modalState === 'password'" :email="formValues.email" @back-connexion="backToLogin" />
     <register-modal-content v-if="modalState === 'register'" @back-connexion="backToLogin" />
-  </vmc-modal>
+  </eth-modal>
 </template>
 
 <script lang="ts" setup>
-import { AlertModes, InputTypes, GlobalEventTypes } from '@/types/constants'
+import { AlertModes, GlobalEventTypes, InputTypes } from '@/assets/ts/enums'
 
 type TModalState = 'login' | 'password' | 'register'
 

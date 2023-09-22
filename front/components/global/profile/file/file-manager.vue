@@ -1,7 +1,7 @@
 <template>
   <div class="file-manager">
     <div class="file-manager__content">
-      <vmc-loader v-if="loading" class="file-manager__content--loader" :size="35" />
+      <eth-loader v-if="loading" class="file-manager__content--loader" :size="35" />
 
       <file-upload-input v-else :title="uploadTitle" @file-received="fileReceived" />
     </div>

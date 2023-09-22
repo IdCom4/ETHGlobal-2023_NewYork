@@ -4,7 +4,7 @@
       <h3>Mot de passe oublié ?</h3>
     </div>
     <form>
-      <vmc-input
+      <eth-input
         v-model="email"
         type="email"
         label="Adresse mail"

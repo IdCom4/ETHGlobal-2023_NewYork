@@ -1,6 +1,0 @@
-export * from './address.d'
-export * from './comment.d'
-export * from './dateRange.d'
-export * from './notification.d'
-export * from './publicFiles.d'
-export * from './payment-data.d'

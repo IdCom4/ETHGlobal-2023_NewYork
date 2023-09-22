@@ -2,7 +2,7 @@
   <header class="header-profil shadowbox">
     <div class="name">
       <div class="name__logo">
-        <vmc-profile-picture :user="props.user" updatable @update-logo="handleUpdateLogo"></vmc-profile-picture>
+        <eth-profile-picture :user="props.user" updatable @update-logo="handleUpdateLogo"></eth-profile-picture>
       </div>
       <div class="wrapper">
         <h2 class="name__title">

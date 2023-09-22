@@ -1,7 +1,7 @@
 <template>
   <section class="date-inputs">
-    <vmc-input v-model="startDate" type="date" label="Date" :error="errors.startDate" modal-style @update:model-value="hasDateError" />
-    <vmc-input v-model="startTime" type="time" label="Heure" :error="errors.startTime" step="900" modal-style />
+    <eth-input v-model="startDate" type="date" label="Date" :error="errors.startDate" modal-style @update:model-value="hasDateError" />
+    <eth-input v-model="startTime" type="time" label="Heure" :error="errors.startTime" step="900" modal-style />
   </section>
 </template>
 <script setup lang="ts">
