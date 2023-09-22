@@ -1,0 +1,4 @@
+export enum VmcCompaniesKeyNames {
+  CENTER = 'STRIPE_SECRET_KEY_CENTER',
+  PLATEFORME = 'STRIPE_SECRET_KEY_PLATEFORME',
+}

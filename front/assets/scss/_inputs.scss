@@ -1,0 +1,143 @@
+/* text */
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.form__field {
+  font-family: 'Nunito';
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #dcdcdc;
+  outline: 0;
+  font-size: 1rem;
+  color: $color-dark-blue;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ .form__label {
+    font-family: 'Montserrat';
+    font-size: 1rem;
+    cursor: text;
+    top: 20px;
+  }
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  font-family: 'Montserrat';
+  transition: 0.2s;
+  font-size: 1rem;
+  color: $color-dark-blue;
+}
+
+.form__field:focus {
+  ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1.2rem;
+    color: $color-dark-blue;
+    font-weight: 700;
+  }
+}
+/* reset input */
+.form__field {
+  &:required,
+  &:invalid {
+    box-shadow: none;
+  }
+}
+/* checkbox */
+
+@mixin checkboxBefore {
+  content: '';
+  width: 0.87em;
+  height: 0.87em;
+  transition: 120ms transform ease-in-out;
+  transform-origin: bottom left;
+}
+
+:root {
+  --checkbox-control-disabled: $color-dark-blue;
+}
+.checkbox-control {
+  margin: 1em;
+  .checkbox {
+    width: fit-content;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgb(196, 196, 196);
+    padding: 5px;
+  }
+}
+
+input[type='checkbox'] {
+  display: grid;
+  place-content: center;
+  width: 1.15em;
+  height: 1.15em;
+  margin: 10px;
+  background-color: #fff;
+  color: currentColor;
+  border: 0.05em solid currentColor;
+  transform: translateY(-0.075em);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  &::before {
+    @include checkboxBefore;
+
+    box-shadow: inset 1em 1em $color-neon-blue;
+    transform: scale(0);
+  }
+  &:checked::before {
+    transform: scale(1);
+  }
+  &:disabled {
+    --checkbox-control-color: var(--checkbox-control-disabled);
+
+    color: var(--checkbox-control-disabled);
+    cursor: not-allowed;
+    &::before {
+      @include checkboxBefore;
+
+      transform-origin: bottom left;
+      box-shadow: inset 1em 1em currentColor;
+      clip-path: polygon(1% 51%, 26% 89%, 98% 5%, 87% 4%, 26% 75%, 11% 51%);
+      transform: scale(1);
+    }
+  }
+  // &:focus {
+  //   outline: max(2px, 0.15em) solid currentColor;
+  //   outline-offset: max(2px, 0.15em);
+  // }
+}
+
+/* selects */
+.vmc-select {
+  background-color: white;
+  border-radius: 3px;
+  background: #fff url('https://vmc-static-contents.s3.eu-west-3.amazonaws.com/down.svg') no-repeat right 0.75rem
+    center/8px 10px;
+  color: $color-grey;
+  font-family: 'Nunito';
+
+  option {
+    background-color: white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

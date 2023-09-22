@@ -1,0 +1,139 @@
+button {
+  --background-color: #{#fff};
+  --font-color: #{$color-grey};
+
+  width: fit-content;
+  border: none;
+  font-style: italic;
+  text-align: center;
+  padding: 5px;
+  background-color: var(--background-color);
+  color: var(--font-color);
+  cursor: pointer;
+  transition: 0.3s;
+
+  &.btn_functional {
+    --background-color: transparent;
+    --font-color: #000;
+
+    font-family: 'Nunito';
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+
+    .icon {
+      margin-right: 6px;
+    }
+  }
+
+  &.btn_call-to-action {
+    --background-color: #{$color-neon-blue};
+    --font-color: #000;
+
+    font-size: 12px;
+    padding: 10px 15px;
+    
+    &.--white {
+      --background-color: #{#fff};
+      border: solid 1px;
+      padding: 10px 15px;
+    }
+    &.--inverted {
+      --background-color: #{$color-dark-blue};
+      --font-color: #{$color-neon-blue};
+    }
+    &:hover {
+      @include hover-btn;
+    }
+    &.btn-mission {
+      font-size: 10px;
+      padding: 7px 5px;
+    }
+  }
+
+  &.btn_denied {
+    @extend .btn_call-to-action;
+    --background-color: #{$color-error};
+
+    &:hover {
+      @include hover-btn;
+    }
+    &.--white-font {
+      color: $white;
+    }
+  }
+
+  &.btn_navigation {
+    --background-color: #{$color-neon-blue};
+    --font-color: #000;
+
+    font-size: 10px;
+    width: 100%;
+
+    &:hover {
+      @include hover-btn;
+    }
+  }
+
+  &.btn_sort {
+    --background-color: #{transparent};
+    --font-color: #000;
+
+    text-align: center;
+    width: auto;
+    border: solid 1px #000;
+    padding: 5px;
+    text-transform: inherit;
+    font-family: 'Nunito';
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  &.btn_disabled,
+  &:disabled {
+    --background-color: #{$color-offwhite} !important;
+    --font-color: #{$color-light-grey} !important;
+
+    box-shadow: 0 0 10px $color-light-grey !important;
+    cursor: not-allowed !important;
+  }
+
+  &.--load {
+    --background-color: #{#e6e6e6ee};
+    --font-color: #{#d5d5d576};
+
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+    height: auto;
+    filter: grayscale(40%);
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50px, -50px);
+      width: 22px;
+      height: 22px;
+      margin: -11px;
+      background-image: url('./../../img/01_ValueMyCar_SymbolePositif_RVB.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      filter: contrast(200%) brightness(125%);
+      animation: spin 2s infinite linear;
+    }
+  }
+
+  &:not(.btn_disabled):active {
+    animation: bounce 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  // &:focus {
+  //   outline: none;
+  //   outline-width: 0;
+  // }
+}

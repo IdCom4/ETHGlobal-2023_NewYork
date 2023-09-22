@@ -1,0 +1,106 @@
+stages:
+  - test
+  - build
+  - deploy
+
+##############
+#    TEST    #
+##############
+
+#test-application:
+#  stage: test
+#  image: node:18.13
+#  script:    
+#    - yarn install
+#    - echo "$DEVELOPMENT_ENVIRONMENT_FILE" > ./envs/.development.env
+#    - yarn run test:unit
+
+##############
+#    BUILD   #
+##############
+
+build-development-application:
+  stage: build
+  only:
+    - staging
+  image: node:18.13
+  environment: staging
+  before_script:
+    - yarn install
+  cache:
+    paths:
+      - node_modules/
+  script:
+    - cp $STAGING_ENV_FILE ./envs/.staging.env
+    - yarn run generate:staging
+  artifacts:
+    expire_in: 30 mins
+    paths:
+      - .output/public
+
+build-production-application:
+  stage: build
+  only:
+    - main
+  image: node:18.13
+  environment: production
+  before_script:
+    - yarn install
+  cache:
+    paths:
+      - node_modules/
+  script:
+    - cp $PRODUCTION_ENV_FILE ./envs/.production.env
+    - yarn run generate:production
+  artifacts:
+    expire_in: 30 mins
+    paths:
+      - .output/public
+
+##############
+# DEPLOYMENT #
+##############
+
+# this job applies to all branches so that there is an online page to review
+# this currently doesn't work because of CORS restrictions in Gitlab Pages
+# solutions could be:
+# 1. manage API request differently with a proxy
+# 1. deploy to s3 instead
+
+#pages:
+#  stage: deploy
+#  except:
+#   - staging
+#   - master
+#  environment: development
+#  image: alpine:latest
+#  script:
+#    - mkdir -p ./public
+#    - cp -r ./.output/public/* ./public
+#  artifacts:
+#    expire_in: 1 week
+#    paths:
+#     - public
+
+# this job deploys staging branch to staging host
+staging-deployment:
+  stage: deploy
+  only:
+    - staging
+  environment: staging
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - aws s3 rm s3://$STAGING_S3_BUCKET_NAME/ --recursive
+    - aws s3 cp ./.output/public s3://$STAGING_S3_BUCKET_NAME/ --recursive
+
+# this job deploys master branch to production host
+production-deployment:
+  stage: deploy
+  only:
+    - main
+  when: manual
+  environment: production
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - aws s3 rm s3://$PRODUCTION_S3_BUCKET_NAME/ --recursive
+    - aws s3 cp ./.output/public s3://$PRODUCTION_S3_BUCKET_NAME/ --recursive

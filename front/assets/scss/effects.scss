@@ -1,0 +1,14 @@
+.shadowbox {
+  position: relative;
+  &::before {
+    content: '';
+    height: 50px;
+    width: 98%;
+    border-radius: 50%;
+    box-shadow: 0px 16px 50px 0px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    z-index: -1;
+  }
+}

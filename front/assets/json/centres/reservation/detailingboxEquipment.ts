@@ -1,0 +1,22 @@
+export const detailingBoxEquipments: string[] = [
+  'Pont élévateur',
+  'Nettoyeur haute pression',
+  'Sécheur',
+  'Polisseuses orbitales',
+  'Ponceuse',
+  'Pads et produits de polissage',
+  'Pads et produits de lustrage',
+  'Aspirateur',
+  'Injecteur Extracteur',
+  'Nettoyeur vapeur',
+  'Tornador',
+  'Seaux et gants de lavage',
+  'Microfibres de séchage',
+  'Brosses, plumeaux et pinceux à jantes',
+  'Pinceaux exterieurs (hard et soft)',
+  'Brosse plastique',
+  'Pinceux interieurs (hard, soft, précision)',
+  "Brosse poils d'animaux",
+  'Brosse cuir',
+  "Barre d'argile"
+]

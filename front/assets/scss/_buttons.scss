@@ -1,0 +1,87 @@
+button {
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    outline-width: 0;
+  }
+}
+
+/* button squeletton */
+.vmc-btn {
+  --background-color: #{$color-light-grey};
+  --hover-background-color: #{$color-offwhite};
+  --font-color: #{$color-grey};
+
+  
+  font-family: 'Montserrat';
+  font-weight: 700;
+  font-size: $font-size-2;
+  border: none !important;
+  padding: $spacing-2 calc($spacing-2 * 2);
+  // min-height: 30px;
+  box-shadow: 0 2px 2px 0 rgba(178, 178, 178, 0.16), 0 2px 2px 0 rgba(178, 178, 178, 0.12);
+  background-color: var(--background-color) !important;
+  color: var(--font-color) !important;
+  transition: background-color 0.2s ease;
+
+  &:disabled,
+  &.disabled {
+    --background-color: #{$color-offwhite};
+    --hover-background-color: #{$color-offwhite};
+    --font-color: #{$color-light-grey};
+    cursor: not-allowed;
+  }
+
+  &:hover:not([disabled]):not(.disabled) {
+    box-shadow: 0 5px 8px 0 rgba(122, 122, 122, 0.16), 0 4px 8px 0 rgba(122, 122, 122, 0.16) !important;
+    background-color: var(--hover-background-color) !important;
+    border: none;
+  }
+
+  &:not([disabled]):not(.disabled):active {
+    animation: bounce 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  &.--white {
+    --background-color: white;
+    --hover-background-color: #{$color-light-grey};
+    --font-color: black;
+  }
+
+  &.--dark-blue {
+    --background-color: #{$color-dark-blue};
+    --hover-background-color: #{$color-blue};
+    --font-color: #{$color-offwhite};
+  }
+
+  &.--blue {
+    --background-color: #{$color-blue};
+    --hover-background-color: #{$color-dark-blue};
+    --font-color: #{$color-offwhite};
+  }
+
+  &.--neon-blue {
+    --background-color: #{$color-neon-blue};
+    --hover-background-color: #{$color-neon-blue};
+    --font-color: #{$color-dark-blue};
+  }
+
+  &.--orange {
+    --background-color: #{$color-orange};
+    --hover-background-color: #{$color-yellow};
+    --font-color: #{$color-offwhite};
+  }
+
+  &.--error {
+    --background-color: #{$color-error};
+    --hover-background-color: red;
+    --font-color: #{$color-offwhite};
+  }
+
+  &.--success {
+    --background-color: #{$color-success};
+    --hover-background-color: green;
+    --font-color: #{$color-offwhite};
+  }
+}

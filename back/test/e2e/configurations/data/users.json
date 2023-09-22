@@ -1,0 +1,317 @@
+[
+  {
+    "_id": {
+      "$oid": "642beaab483d9a5795288890"
+    },
+    "name": "John",
+    "lastName": "Doe",
+    "phone": "0612345678",
+    "email": "john@doe.fr",
+    "hashedPassword": "$argon2id$v=19$m=65536,t=3,p=4$Gp7nVU5bVfsDvJ43nmarow$jBKH3HbpDD7ZrKy+klyqJ5H3j2JLn44NgWGmxl3rwF8",
+    "sex": "X",
+    "notifications": [],
+    "vehiclesId": [],
+    "centerClientProfile": {
+      "cgu": true,
+      "notificationPreferences": {
+        "bookingValidated": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T09:15:23.490Z"
+          }
+        },
+        "bookingCancelled": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T09:15:23.490Z"
+          }
+        }
+      },
+      "bookingsId": []
+    },
+    "missionClientProfile": {
+      "cgu": true,
+      "notificationPreferences": {
+        "newQuoteReceived": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T09:15:23.490Z"
+          }
+        },
+        "missionFinished": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T09:15:23.490Z"
+          }
+        },
+        "newMissionProposal": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T09:15:23.490Z"
+          }
+        },
+        "missionCancelledByProfessional": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T09:15:23.490Z"
+          }
+        }
+      },
+      "missionsId": [],
+      "favoriteProfessionalsId": [],
+      "date": {
+        "$date": "2023-04-04T09:15:23.490Z"
+      }
+    },
+    "vmcComments": [],
+    "isEmailValidated": true,
+    "lastLogin": {
+      "$date": "2023-04-04T09:15:23.490Z"
+    },
+    "admin": false,
+    "currentHashedRefreshToken": null,
+    "birthday": "2023-05-02T09:47:16.521Z",
+    "createdAt": {
+      "$date": "2023-04-04T09:15:23.996Z"
+    },
+    "updatedAt": {
+      "$date": "2023-04-04T09:15:23.996Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "642c1fef69b880926c8b03ca"
+    },
+    "name": "Jaune",
+    "lastName": "D'eau",
+    "phone": "0612345678",
+    "email": "jaune.deau@pro.fr",
+    "hashedPassword": "$argon2id$v=19$m=65536,t=3,p=4$3sHxD1xw7XrVC9jicylbdQ$HiZ1UWFMOLM1HyggjW8o9vyWKnuft/ltF13zDn+cphE",
+    "sex": "X",
+    "notifications": [],
+    "vehiclesId": [],
+    "centerClientProfile": {
+      "cgu": true,
+      "notificationPreferences": {
+        "bookingValidated": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.668Z"
+          }
+        },
+        "bookingCancelled": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.668Z"
+          }
+        }
+      },
+      "bookingsId": []
+    },
+    "missionClientProfile": {
+      "cgu": true,
+      "notificationPreferences": {
+        "newQuoteReceived": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.668Z"
+          }
+        },
+        "missionFinished": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.668Z"
+          }
+        },
+        "newMissionProposal": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.668Z"
+          }
+        },
+        "missionCancelledByProfessional": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.668Z"
+          }
+        }
+      },
+      "missionsId": [],
+      "favoriteProfessionalsId": [],
+      "date": {
+        "$date": "2023-04-04T13:02:39.668Z"
+      }
+    },
+    "professionalProfile": {
+      "businessName": "test",
+      "notificationPreferences": {
+        "newMissionReceived": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.667Z"
+          }
+        },
+        "newQuoteRequired": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.667Z"
+          }
+        },
+        "missionValidatedByClient": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.667Z"
+          }
+        },
+        "professionalDeniedByClient": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.667Z"
+          }
+        },
+        "missionCancelledByClient": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:02:39.667Z"
+          }
+        }
+      },
+      "skills": [],
+      "history": {
+        "studies": [],
+        "professionalExperiences": [],
+        "realisations": []
+      },
+      "missionsId": [],
+      "nbrFinishedMissions": 0,
+      "clientReviews": [],
+      "isFavoriteOf": [],
+      "professionalPaymentData": {
+        "pastDue": [],
+        "status": "EMPTY"
+      },
+      "completionScore": 0,
+      "bonusScore": 0,
+      "vmcCertified": false,
+      "ecologicalCharter": true,
+      "shadowBanned": false
+    },
+    "vmcComments": [],
+    "isEmailValidated": true,
+    "lastLogin": {
+      "$date": "2023-04-04T13:02:39.668Z"
+    },
+    "admin": false,
+    "currentHashedRefreshToken": null,
+    "createdAt": {
+      "$date": "2023-04-04T13:02:39.856Z"
+    },
+    "updatedAt": {
+      "$date": "2023-04-04T13:02:39.856Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "642c206b69b880926c8b03cd"
+    },
+    "name": "Jone",
+    "lastName": "Duil",
+    "phone": "0612345678",
+    "email": "jone@spam.fr",
+    "hashedPassword": "$argon2id$v=19$m=65536,t=3,p=4$jCzRYxFpSuu4VWH0lgtsEg$zJFuIW5V5D8CW8M2Jsqd9dp1YdRU1x0WdGgYyvP6jTI",
+    "sex": "X",
+    "notifications": [],
+    "vehiclesId": [],
+    "centerClientProfile": {
+      "cgu": true,
+      "notificationPreferences": {
+        "bookingValidated": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:04:42.772Z"
+          }
+        },
+        "bookingCancelled": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:04:42.772Z"
+          }
+        }
+      },
+      "bookingsId": []
+    },
+    "missionClientProfile": {
+      "cgu": true,
+      "notificationPreferences": {
+        "newQuoteReceived": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:04:42.772Z"
+          }
+        },
+        "missionFinished": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:04:42.772Z"
+          }
+        },
+        "newMissionProposal": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:04:42.772Z"
+          }
+        },
+        "missionCancelledByProfessional": {
+          "email": true,
+          "sms": true,
+          "date": {
+            "$date": "2023-04-04T13:04:42.772Z"
+          }
+        }
+      },
+      "missionsId": [],
+      "favoriteProfessionalsId": [],
+      "date": {
+        "$date": "2023-04-04T13:04:42.773Z"
+      }
+    },
+    "vmcComments": [],
+    "isEmailValidated": false,
+    "lastLogin": {
+      "$date": "2023-04-04T13:04:42.773Z"
+    },
+    "admin": false,
+    "currentHashedRefreshToken": null,
+    "createdAt": {
+      "$date": "2023-04-04T13:04:43.252Z"
+    },
+    "updatedAt": {
+      "$date": "2023-04-04T13:04:43.252Z"
+    },
+    "__v": 0
+  }
+]

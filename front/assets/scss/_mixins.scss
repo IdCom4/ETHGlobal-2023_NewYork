@@ -1,0 +1,42 @@
+@mixin fontLabelRules {
+  font-family: 'Montserrat';
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-dark-blue;  
+}
+
+@mixin toggleBgWhite {
+  z-index: 10;
+  min-width: 55px;
+  margin: auto;
+  padding: 3px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+@mixin hover-btn {
+  filter: brightness(125%);
+  box-shadow: 2px 2px 5px 1px #979797a8 !important;
+}
+
+@mixin line-clamp($lines, $line-height) {
+  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  max-height: $lines * $line-height;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin fade-effect() {
+  @for $i from 1 through 999 {
+    .fadeInUp-#{$i} {
+      animation-name: fadeInUp;
+      animation-duration: 0.7s;
+      animation-delay: 0.05s * $i;
+      animation-fill-mode: both;
+    }
+  }
+}
