@@ -21,8 +21,6 @@
     "typeRoots": ["./node_modules/@types", "./src/types/**", "./src/extensions/**"],
     "paths": {
       "@/*": ["src/*"],
-      "@Api/*": ["src/API/*"],
-      "@Schemas/*": ["src/schemas/*"],
       "@Common/*": ["src/common/*"]
     }
   }

@@ -1,3 +1,7 @@
+import { DataFetcher } from "./data-fetcher"
+import { DataProcesser } from "./data-processer"
+import '@/extensions'
+
 export class Wisdom 
 {
 
@@ -10,17 +14,57 @@ export class Wisdom
         return ''
     }
 
-    public fetchAssetContributions(assetId: string): Record<TContributorEntry, TProportion> {}
+    public async fetchAssetContributions(assetId: string): Promise<Record<TContributorEntry, TProportion>> {
+        // fetch data
+        const assetTransactions = await DataFetcher.fetchAssetTransactions(assetId)
 
-    public fetchAppContributions(appAddress: string): Record<TContributorEntry, TProportion>[] {}
+        
+        return DataProcesser.getAssetContributionsFromAssetTransations(assetTransactions)
+    }
 
-    public fetchContributorContributions(contributorAddress: string): Record<TAssetId, TContributorEntry>[] {}
+    public async fetchAppContributions(appAddress: string): Promise<Record<TAssetId, Record<TContributorEntry, TProportion>>> {
+        // fetch data
+        const appTransactions = await DataFetcher.fetchAppTransactions(appAddress)
+
+        // filter assets transactions
+        const appAssetsTransactions = DataProcesser.regroupAssetsTransactionsFromAllTransactions(appTransactions)
+
+        // get assets contributions
+        const appAssetsContributions: Record<TAssetId, Record<TContributorEntry, TProportion>> = {}
+        for (const [assetId, transactions] of Object.entries(appAssetsTransactions))
+            appAssetsContributions[assetId] = DataProcesser.getAssetContributionsFromAssetTransations(transactions)
+            
+        return appAssetsContributions
+    }
+
+    public async fetchContributorContributions(contributorAddress: string): Promise<Record<TAssetId, TContributorEntry>[]> {
+        // fetch data
+        const contributorAllTransactions = await DataFetcher.fetchContributorTransactions(contributorAddress)
+
+        return DataProcesser.getContributorContributionsFromTransactions(contributorAllTransactions)
+
+    }
     
-    public fetchContributorAppContributions(contributorAddress: string, appAddress: string): Record<TAssetId, TContributorEntry>[] {}
+    public async fetchContributorAppContributions(contributorAddress: string, appAddress: string): Promise<Record<TAssetId, TContributorEntry>[]> {
+        // fetch data
+        const contributorAppTransactions = await DataFetcher.fetchContributorAppTransations(contributorAddress, appAddress)
 
-    public fetchContributorAppReputation(appAddress: string, contributorAddress: string): TContributorReputation {}
+        return DataProcesser.getContributorContributionsFromTransactions(contributorAppTransactions)
+    }
 
-    public fetchAppContributorsReputation(appAddress: string): Record<TContributorAddress, TContributorReputation> {}
+    public async fetchContributorAppReputation(appAddress: string, contributorAddress: string): Promise<TContributorReputation> {
+        // fetch data
+        const appAssetsTransactions = await DataFetcher.fetchAppAssetsTransactionsWhereContributorContributed(contributorAddress, appAddress)
+
+        return DataProcesser.getContributorReputationFromAssetsTransactionsWhereContributorContributed(contributorAddress, appAssetsTransactions)
+    }
+
+    public async fetchAppContributorsReputation(appAddress: string): Promise<Record<TContributorAddress, TContributorReputation>> {
+        // fetch data
+        const appTransactions = await DataFetcher.fetchAppTransactions(appAddress)
+
+        return DataProcesser.getAppAllContributorReputations(appTransactions)
+    }
 
 
 }
