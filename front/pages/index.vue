@@ -59,12 +59,22 @@
       </div>
     </section>
 
-    <eth-modal max-width="500px" class="modal" :is-open="isReportOpen" @close="isReportOpen = false">
+    <i-d-kit-widget
+      app_id="app_GBkZ1KlVUdFTjeMXKlVUdFT"
+      action="vote_1"
+      signal="user_value"
+      :on-success="(value: unknown) => console.log({ value })"
+      :credential_types="['orb', 'phone']"
+      enable-telemetry
+    >
+    </i-d-kit-widget>
+
+    <eth-modal max-width="500px" :is-open="isReportOpen" @close="isReportOpen = false">
       <h3>Who's the original artist of this song ?</h3>
       <autocomplete-input
         v-model="selectedArtist"
         style="margin-top: 30px;"
-        :options="artists.map((artist) => ({ display: artist.name, value: artist }))"
+        :options="artists.map((artist: IArtist) => ({ display: artist.name, value: artist }))"
         label="Artist's name"
         :selected-style="SelectedOptionStyles.CHIP"
         placeholder="artist's name"
@@ -80,36 +90,82 @@
   </section>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import { musics, artists } from '@/assets/data'
-import { SelectedOptionStyles } from '~~/assets/ts'
-import { Validator } from '~~/composables/useValidator'
+import { SelectedOptionStyles } from '@/assets/ts'
+import { Validator } from '@/composables/useValidator'
 
-const isReportOpen = ref<boolean>(false)
-const currentMusicIndex = ref<number>(0)
-const selectedArtist = ref<IArtist>()
+import { applyPureReactInVue } from 'veaury'
+import { IDKitWidget } from '@worldcoin/idkit'
+import { useIDKit } from '@worldcoin/idkit'
 
-const validator = ref<Validator<IArtist>>(
-  useValidator().createValidator<IArtist>(
-    (value?: IArtist) => {
-      if (!value) return ['You must provide an artist']
-      else return []
-    },
-    () => selectedArtist.value
-  )
-)
+export default {
+  components: {
+    IDKitWidget: applyPureReactInVue(IDKitWidget)
+  },
+  setup() {
+    const isReportOpen = ref<boolean>(false)
+    const currentMusicIndex = ref<number>(0)
+    const selectedArtist = ref<IArtist>()
 
-function previous() {
-  currentMusicIndex.value = currentMusicIndex.value ? currentMusicIndex.value - 1 : musics.length - 1
+    const validator = ref<Validator<IArtist>>(
+      useValidator().createValidator<IArtist>(
+        (value?: IArtist) => {
+          if (!value) return ['You must provide an artist']
+          else return []
+        },
+        () => selectedArtist.value
+      )
+    )
+
+    function previous() {
+      currentMusicIndex.value = currentMusicIndex.value ? currentMusicIndex.value - 1 : musics.length - 1
+    }
+
+    function next() {
+      currentMusicIndex.value = (currentMusicIndex.value + 1) % musics.length
+    }
+
+    function submit() {
+      if (!validator.value.validate()) return
+
+      const { open, setOpen } = useIDKit()
+
+      console.log({ open })
+      setOpen(true)
+      console.log({ open })
+    }
+
+    return {
+      SelectedOptionStyles,
+
+      artists,
+      musics,
+
+      isReportOpen,
+      currentMusicIndex,
+      selectedArtist,
+
+      validator,
+
+      previous,
+      next,
+      submit
+    }
+  }
 }
 
-function next() {
-  currentMusicIndex.value = (currentMusicIndex.value + 1) % musics.length
-}
+// enum CredentialType {
+//   Orb = 'orb',
+//   Phone = 'phone'
+// }
 
-function submit() {
-  if (!validator.value.validate()) return
-}
+// interface IHandleVerifyPayload {
+//   proof: string
+//   merkle_root: string
+//   nullifier_hash: string
+//   credential_type: CredentialType
+// }
 </script>
 
 <style lang="scss" scoped>

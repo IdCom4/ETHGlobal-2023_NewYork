@@ -1,25 +1,6 @@
-<template>
-  <section id="test">
-    <autocomplete-input v-if="issues" v-model="selectedIssues" :options="issuesAsOptions" />
-  </section>
-</template>
+<template><div></div></template>
 
-<script lang="ts" setup>
-const selectedIssues = ref<IIssue[]>([])
-const issues = ref<IIssue[]>([])
-const issuesAsOptions = ref<IInputSelectOptions[]>([])
-
-async function fetchData() {
-  const response = await useAPI().issues.getIssues()
-
-  if (!response.error && response.data) {
-    issues.value = response.data
-    issuesAsOptions.value = issues.value.map((issue) => ({ value: issue, display: issue.label }))
-  }
-}
-
-fetchData()
-</script>
+<script lang="ts"></script>
 
 <style lang="scss" scoped>
 #test {
