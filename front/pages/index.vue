@@ -59,7 +59,7 @@
       </div>
     </section>
 
-    <i-d-kit-widget
+    <!-- <i-d-kit-widget
       app_id="app_GBkZ1KlVUdFTjeMXKlVUdFT"
       action="vote_1"
       signal="user_value"
@@ -67,7 +67,10 @@
       :credential_types="['orb', 'phone']"
       enable-telemetry
     >
-    </i-d-kit-widget>
+    </i-d-kit-widget> -->
+    <!-- <button :data="{ open }" @click="open">Click me</button> -->
+
+    <!-- <my-component /> -->
 
     <eth-modal max-width="500px" :is-open="isReportOpen" @close="isReportOpen = false">
       <h3>Who's the original artist of this song ?</h3>
@@ -95,18 +98,28 @@ import { musics, artists } from '@/assets/data'
 import { SelectedOptionStyles } from '@/assets/ts'
 import { Validator } from '@/composables/useValidator'
 
-import { applyPureReactInVue } from 'veaury'
-import { IDKitWidget } from '@worldcoin/idkit'
-import { useIDKit } from '@worldcoin/idkit'
+// import { applyPureReactInVue } from 'veaury'
+// import { IDKitWidget } from '@worldcoin/idkit'
+// import { useIDKit } from '@worldcoin/idkit'
+// import ReactComponent from '@/assets/ts/comp'
 
 export default {
   components: {
-    IDKitWidget: applyPureReactInVue(IDKitWidget)
+    // IDKitWidget: applyPureReactInVue(IDKitWidget)
+    /* eslint-disable  */
+    // MyComponent: applyPureReactInVue(ReactComponent)
   },
   setup() {
     const isReportOpen = ref<boolean>(false)
     const currentMusicIndex = ref<number>(0)
     const selectedArtist = ref<IArtist>()
+
+    // const { open, setOpen } = useIDKit({
+    //   signal: 'my_signal',
+    //   handleVerify: (value: unknown) => console.log(value),
+    //   actionId: 'get_this_from_the_dev_portal',
+    //   walletConnectProjectId: 'get_this_from_walletconnect_portal'
+    // })
 
     const validator = ref<Validator<IArtist>>(
       useValidator().createValidator<IArtist>(
@@ -129,11 +142,6 @@ export default {
     function submit() {
       if (!validator.value.validate()) return
 
-      const { open, setOpen } = useIDKit()
-
-      console.log({ open })
-      setOpen(true)
-      console.log({ open })
     }
 
     return {
@@ -150,7 +158,8 @@ export default {
 
       previous,
       next,
-      submit
+      submit,
+      // useIDKit
     }
   }
 }
