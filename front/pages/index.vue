@@ -4,7 +4,7 @@
     <section class="menu">
       <h4 class="title">Music</h4>
 
-      <eth-input type="text" :model-value="'Stole The Show'" :icon="['fas', 'magnifying-glass']" theme="dark" />
+      <eth-input type="text" :model-value="musics[currentMusicIndex].title" :icon="['fas', 'magnifying-glass']" theme="dark" />
 
       <div class="icons">
         <p class="link"><fa class="icon" :icon="['fas', 'music']" /> Songs</p>
@@ -19,38 +19,36 @@
     <!-- PLAYER -->
     <section class="player">
       <div class="nav">
-        <button class="btn_call-to-action --inverted">Tell us who is the author</button>
+        <button class="btn_call-to-action --inverted" @click="isReportOpen = true">Tell us who is the author</button>
         <div class="action">
           <fa class="icon" :icon="['fas', 'caret-down']" />
           <fa class="icon" :icon="['fas', 'expand']" />
           <fa class="icon" :icon="['fas', 'close']" />
         </div>
       </div>
-      <div class="music-data">
-        <img src="https://dh22twu0ekfg6.cloudfront.net/media/auction_house/assets/31638/Auction%20Image%20-%20PJ.png" alt="" />
-        <div class="meta">
-          <div class="info">
-            <h4 class="title">Stole The Show</h4>
-            <p class="from">DJ Super Cool</p>
-            <p class="rating">
-              <fa class="icon" :icon="['fas', 'star']" />
-              <fa class="icon" :icon="['fas', 'star']" />
-              <fa class="icon" :icon="['fas', 'star']" />
-              <fa class="icon" :icon="['far', 'star']" />
-              <fa class="icon" :icon="['far', 'star']" />
-            </p>
+      <div class="music-wrapper" :style="`--current-music: ${currentMusicIndex}`">
+        <div class="slider">
+          <div v-for="(music, index) of musics" :key="`music-${index}`" class="music-data">
+            <img :src="music.pictureURL" alt="" />
+            <div class="meta">
+              <div class="info">
+                <h4 class="title">{{ music.title }}</h4>
+                <p class="from">{{ artists.find((artist) => artist.id === music.authorId)?.name }}</p>
+                <p class="rating">
+                  <fa v-for="rating in 5" :key="`icon-${rating}`" class="icon" :icon="rating <= music.rating ? ['fas', 'star'] : ['far', 'star']" />
+                </p>
+              </div>
+            </div>
           </div>
-
-          <div class="report"></div>
         </div>
       </div>
 
       <div class="media">
         <div class="icons">
           <fa class="icon --small" :icon="['fas', 'shuffle']" />
-          <fa class="icon --medium" :icon="['far', 'circle-left']" />
+          <fa class="icon --medium" :icon="['far', 'circle-left']" @click="previous" />
           <fa class="icon --large" :icon="['fas', 'play']" />
-          <fa class="icon --medium" :icon="['far', 'circle-right']" />
+          <fa class="icon --medium" :icon="['far', 'circle-right']" @click="next" />
           <fa class="icon --small" :icon="['fas', 'rotate-left']" />
         </div>
         <div class="time">
@@ -60,10 +58,59 @@
         </div>
       </div>
     </section>
+
+    <eth-modal max-width="500px" class="modal" :is-open="isReportOpen" @close="isReportOpen = false">
+      <h3>Who's the original artist of this song ?</h3>
+      <autocomplete-input
+        v-model="selectedArtist"
+        style="margin-top: 30px;"
+        :options="artists.map((artist) => ({ display: artist.name, value: artist }))"
+        label="Artist's name"
+        :selected-style="SelectedOptionStyles.CHIP"
+        placeholder="artist's name"
+        :options-display-limit="6"
+        :error="validator.getErrors()[0]"
+        @input="validator.validate()"
+      />
+
+      <div style="width: 100%; display: flex; justify-content: center; margin-top: 30px;">
+        <button class="btn_call-to-action" style="margin: auto" @click="submit">Submit</button>
+      </div>
+    </eth-modal>
   </section>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { musics, artists } from '@/assets/data'
+import { SelectedOptionStyles } from '~~/assets/ts'
+import { Validator } from '~~/composables/useValidator'
+
+const isReportOpen = ref<boolean>(false)
+const currentMusicIndex = ref<number>(0)
+const selectedArtist = ref<IArtist>()
+
+const validator = ref<Validator<IArtist>>(
+  useValidator().createValidator<IArtist>(
+    (value?: IArtist) => {
+      if (!value) return ['You must provide an artist']
+      else return []
+    },
+    () => selectedArtist.value
+  )
+)
+
+function previous() {
+  currentMusicIndex.value = currentMusicIndex.value ? currentMusicIndex.value - 1 : musics.length - 1
+}
+
+function next() {
+  currentMusicIndex.value = (currentMusicIndex.value + 1) % musics.length
+}
+
+function submit() {
+  if (!validator.value.validate()) return
+}
+</script>
 
 <style lang="scss" scoped>
 #home-page {
@@ -73,9 +120,12 @@
   // background-size: cover;
   // background-position: left;
 
+  $menu-width: 300px;
+  $player-width: calc(100vw - $menu-width);
+
   .menu {
     height: 100%;
-    width: 400px;
+    width: 300px;
     padding: $spacing-4;
     display: flex;
     flex-direction: column;
@@ -122,7 +172,7 @@
 
   .player {
     height: 100%;
-    width: 100%;
+    width: $player-width;
     padding: $spacing-5;
 
     background-color: #444444;
@@ -152,41 +202,58 @@
       }
     }
 
-    .music-data {
-      margin-top: $spacing-3;
-      display: flex;
-      gap: $spacing-4;
+    .music-wrapper {
+      overflow: hidden;
+      $music-data-height: 350px;
+      position: relative;
       width: 100%;
-
-      img {
-        width: 350px;
-        height: 350px;
-      }
-
-      .meta {
+      height: $music-data-height;
+      margin-top: $spacing-3;
+      .slider {
+        position: absolute;
         display: flex;
-        width: 100%;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-      .info {
-        width: 100%;
-
-        .title {
-          font-size: 25px;
-        }
-
-        .from {
-          font-size: 15px;
-          text-decoration: underline;
-          margin-top: $spacing-2;
-        }
-
-        .rating {
+        gap: calc($spacing-5 * 2);
+        height: 100%;
+        top: 0;
+        transition: 0.5s;
+        left: calc(((100% + ($spacing-5 * 2)) * var(--current-music)) * -1);
+        .music-data {
           display: flex;
-          margin-top: $spacing-4;
-          .icon {
-            width: 15px;
+          gap: $spacing-4;
+          width: calc($player-width - $spacing-5 * 2);
+          height: $music-data-height;
+
+          img {
+            width: $music-data-height;
+            height: $music-data-height;
+          }
+
+          .meta {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .info {
+            width: 100%;
+
+            .title {
+              font-size: 25px;
+            }
+
+            .from {
+              font-size: 15px;
+              text-decoration: underline;
+              margin-top: $spacing-2;
+            }
+
+            .rating {
+              display: flex;
+              margin-top: $spacing-4;
+              .icon {
+                width: 15px;
+              }
+            }
           }
         }
       }
