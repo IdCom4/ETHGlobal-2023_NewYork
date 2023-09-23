@@ -43,12 +43,16 @@ export class DataProcesser {
     const assetsTransactions = DataProcesser.regroupAssetsTransactionsFromAllTransactions(appTransactions) 
 
     const contributorAssetScores: number[] = []
-    for (const transactions of Object.values(assetsTransactions))
-      contributorAssetScores.push(DataProcesser.getContributionScoreFromAssetTransactions(transactions, contributorAddress))
+    for (const transactions of Object.values(assetsTransactions)) {
+      const assetScore = DataProcesser.getContributionScoreFromAssetTransactions(transactions, contributorAddress)
+      if (assetScore) contributorAssetScores.push(assetScore)
+    }
 
+    if (contributorAssetScores.length) return 0
 
+    
     // add every scores and multiply by the amount of contribution to enforce contributions amount impact
-    return contributorAssetScores.reduce((prev, current) => prev + current) * contributorAssetScores.length 
+    return contributorAssetScores.reduce((prev, current) => prev + current) * (1 / contributorAssetScores.length)  
   }
   
   public static getContributionScoreFromAssetTransactions(assetTransactions: ITransaction[], contributorAddress: string): number {
@@ -63,11 +67,8 @@ export class DataProcesser {
     // compare contributor entry to the later contributor's
     for (let index = entryIndex + 1; entryIndex < assetTransactions.length; index++)
       contributorScore += assetTransactions[index].entry === contributorEntry ? 1 : -1
-    
-    // get asset contributions to pounder score
-    const assetContributions = DataProcesser.getAssetContributionsFromAssetTransations(assetTransactions)
 
-    return contributorScore * assetContributions[contributorEntry]
+    return contributorScore
   }
 
   public static getAppAllContributorReputations(appTransactions: ITransaction[]): Record<TContributorAddress, TContributorReputation> {
