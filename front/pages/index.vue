@@ -98,28 +98,12 @@ import { musics, artists } from '@/assets/data'
 import { SelectedOptionStyles } from '@/assets/ts'
 import { Validator } from '@/composables/useValidator'
 
-// import { applyPureReactInVue } from 'veaury'
-// import { IDKitWidget } from '@worldcoin/idkit'
-// import { useIDKit } from '@worldcoin/idkit'
-// import ReactComponent from '@/assets/ts/comp'
-
 export default {
-  components: {
-    // IDKitWidget: applyPureReactInVue(IDKitWidget)
-    /* eslint-disable  */
-    // MyComponent: applyPureReactInVue(ReactComponent)
-  },
+  components: {},
   setup() {
     const isReportOpen = ref<boolean>(false)
     const currentMusicIndex = ref<number>(0)
     const selectedArtist = ref<IArtist>()
-
-    // const { open, setOpen } = useIDKit({
-    //   signal: 'my_signal',
-    //   handleVerify: (value: unknown) => console.log(value),
-    //   actionId: 'get_this_from_the_dev_portal',
-    //   walletConnectProjectId: 'get_this_from_walletconnect_portal'
-    // })
 
     const validator = ref<Validator<IArtist>>(
       useValidator().createValidator<IArtist>(
@@ -141,7 +125,6 @@ export default {
 
     function submit() {
       if (!validator.value.validate()) return
-
     }
 
     return {
@@ -158,8 +141,7 @@ export default {
 
       previous,
       next,
-      submit,
-      // useIDKit
+      submit
     }
   }
 }
