@@ -19,7 +19,7 @@ export class Wisdom
         const assetTransactions = await DataFetcher.fetchAssetTransactions(assetId)
 
         
-        return DataProcesser.getAssetContributionsFromAssetTransations(assetTransactions)
+        return DataProcesser.getAssetContributionsFromAssetTransactions(assetTransactions)
     }
 
     public async fetchAppContributions(appAddress: string): Promise<Record<TAssetId, Record<TContributorEntry, TProportion>>> {
@@ -32,7 +32,7 @@ export class Wisdom
         // get assets contributions
         const appAssetsContributions: Record<TAssetId, Record<TContributorEntry, TProportion>> = {}
         for (const [assetId, transactions] of Object.entries(appAssetsTransactions))
-            appAssetsContributions[assetId] = DataProcesser.getAssetContributionsFromAssetTransations(transactions)
+            appAssetsContributions[assetId] = DataProcesser.getAssetContributionsFromAssetTransactions(transactions)
             
         return appAssetsContributions
     }

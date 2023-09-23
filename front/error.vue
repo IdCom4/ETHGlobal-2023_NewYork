@@ -1,29 +1,17 @@
 <template>
-  <user-alert />
-  <login-modal />
   <!-- pages -->
-  <navbar />
+  <eth-navbar />
 
   <div class="main-content">
     <h2>404</h2>
-    <p class="largest">La page que vous recherchez est introuvable, cliquez sur le bouton ci-dessous pour retourner à la page d'accueil</p>
-    <p class="largest">Le site est actuellement en train d'accueillir une grande mise à jour.</p>
-    <p class="largest">
-      Certaines pages et fonctionnalités ne sont pour l'instant plus disponibles, mais reviendront bientôt plus belles et performantes que jamais
-    </p>
-    <NuxtLink to="/centres">
-      <button class="btn_call-to-action">Accueil</button>
+    <p class="largest">Whoops, something went wrong</p>
+    <NuxtLink to="/">
+      <button class="btn_call-to-action">Home</button>
     </NuxtLink>
   </div>
-  <bottombar-center book-link="/centres/reservation/WASHBOX" />
 </template>
 
-<script lang="ts" setup>
-const route = useRoute()
-const router = useRouter()
-
-if (route.path.includes('rambouillet')) router.push('/centres')
-</script>
+<script lang="ts" setup></script>
 
 <style scoped lang="scss">
 h4 {

@@ -1,13 +1,7 @@
 <template>
   <section id="navbar-center">
     <div class="center-menu --blur">
-      <div class="topbar-center">
-        <div>
-          <nuxt-link to="/" @click="isHamburgerOpen = false">
-            <h1></h1>
-          </nuxt-link>
-        </div>
-
+      <div class="responsive">
         <!-- HAMBURGER -->
         <div class="hamburger-menu-top" :class="{ 'is-open': isHamburgerOpen }" @click="isHamburgerOpen = !isHamburgerOpen">
           <div class="bar-top"></div>
@@ -15,7 +9,6 @@
           <div class="bar-bottom"></div>
         </div>
       </div>
-
       <div class="middlebar-center" :class="{ 'is-open': isHamburgerOpen }" @click.self="isHamburgerOpen = false">
         <ul>
           <!-- LINKS -->
@@ -24,19 +17,11 @@
           </li>
 
           <!-- LOGOUT -->
-          <li v-if="isLoggedIn" @click="logout">
-            <nuxt-link to="/" title="Logout" @click="isHamburgerOpen = false">
+          <li @click="logout">
+            <nuxt-link to="/never" title="Logout" @click="isHamburgerOpen = false">
               Logout
             </nuxt-link>
           </li>
-
-          <!-- LOGIN & REGISTER -->
-          <div v-if="!isLoggedIn" class="login-signup">
-            <button class="btn_call-to-action" @click="openLoginModal">SE CONNECTER</button>
-            <nuxt-link to="/authentification/creer-un-compte" @click="isHamburgerOpen = false">
-              <button class="btn_call-to-action --white">CREER UN COMPTE</button>
-            </nuxt-link>
-          </div>
         </ul>
 
         <div hidden class="hamburger-menu-middle" :class="{ 'is-open': isHamburgerOpen }" @click="isHamburgerOpen = !isHamburgerOpen">
@@ -51,60 +36,28 @@
 </template>
 
 <script lang="ts" setup>
-import { GlobalEventTypes } from '@/assets/ts/enums'
-import { storeToRefs } from 'pinia'
-
-enum UserTypes {
-  NOT_LOGGED = 0,
-  LOGGED = 1
-}
-
 interface ILink {
   to: string
   title: string
   label: string
-  forbiddenTo: UserTypes[]
 }
-
-const { isLoggedIn } = storeToRefs(useSessionStore())
 const isHamburgerOpen = ref<boolean>(false)
 
 /* eslint-disable prettier/prettier */
-const links: ILink[] = []
+const links: ILink[] = [
+  { 'to': '/', 'title': '/', 'label': 'Home' },
+  { 'to': '/0', 'title': '/', 'label': 'My playlists' },
+  { 'to': '/1', 'title': '/', 'label': 'My account' },
+  { 'to': '/2', 'title': '/', 'label': 'Settings' },
+]
+
+const dashboardLinks : ILink[] = [
+  { 'to': '/', 'title': '/', 'label': 'Dashboard' },
+  { 'to': '/2', 'title': '/', 'label': 'Settings' },
+]
 /* eslint-enable prettier/prettier */
 
-const selectedLinks = ref<ILink[]>([])
-
-function updateSelectedLinks() {
-  const isNotLogged = !isLoggedIn.value
-
-  selectedLinks.value = links.filter((link) => {
-    // if link exclude not logged and user is one, return false
-    if (isNotLogged && link.forbiddenTo.includes(UserTypes.NOT_LOGGED)) return false
-
-    return true
-  })
-}
-
-watch(isLoggedIn, updateSelectedLinks)
-onBeforeMount(updateSelectedLinks)
-
-function openLoginModal() {
-  useGlobalEvents().emitEvent(GlobalEventTypes.OPEN_LOGIN)
-}
-
-function logout() {
-  useAPI().auth.logout()
-}
-
-function checkSessionAndFetchProfile() {
-  // TODO: implement
-}
-
-// at each first page load, try to fetch the profile
-// so that if the session expired server wise and tells us as much,
-// the user is gracefully and seamlessly disconnected front wise
-checkSessionAndFetchProfile()
+const selectedLinks = computed(() => (useRoute().fullPath.includes('dashboard') ? dashboardLinks : links))
 </script>
 
 <style lang="scss">
@@ -116,21 +69,20 @@ checkSessionAndFetchProfile()
   position: fixed;
   top: 0;
   width: 100vw;
-  height: 120px;
+  height: 60px;
   padding: 0 20px;
   box-shadow: 0 -3px 30px #000000;
   z-index: 99;
-  &.--blur {
-    background-color: #ffffff28;
-    backdrop-filter: blur(10px);
+  background-color: $color-dark-blue;
+  * {
+    color: white !important;
   }
   &.--bg-white {
     background-color: #fff;
   }
-  .topbar-center {
-    border-bottom: solid 0.5px;
+  .responsive {
+    display: none;
   }
-  .topbar-center,
   .middlebar-center {
     display: flex;
     justify-content: space-between;
@@ -179,20 +131,6 @@ checkSessionAndFetchProfile()
         }
       }
     }
-    .login-signup {
-      display: flex;
-      padding: 0 20px;
-      min-width: 21px;
-      min-height: 34px;
-      border-right: solid 1px;
-      a {
-        text-decoration: none;
-        color: #000;
-      }
-      button {
-        margin: 0 5px;
-      }
-    }
     .hamburger-menu-middle {
       margin: 1.2rem;
       display: flex;
@@ -231,7 +169,7 @@ checkSessionAndFetchProfile()
   top: 0;
   left: 0;
   width: 100vw;
-  height: 120px;
+  height: 60px;
 }
 
 .modal-confirm {
@@ -252,13 +190,12 @@ checkSessionAndFetchProfile()
 @media screen and (max-width: 740px) {
   .center-menu {
     height: 60px;
-    .topbar-center {
-      border-bottom: none;
-      .network {
-        display: none;
-      }
+    .responsive {
+      display: flex;
+      justify-content: right;
+      align-items: center;
+      height: 60px;
       .hamburger-menu-top {
-        margin: 1.2rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -324,25 +261,6 @@ checkSessionAndFetchProfile()
           &:hover {
             transform: translateX(5px);
             font-weight: 800;
-          }
-        }
-        .login-signup {
-          display: block;
-          justify-content: space-between;
-          padding: 0;
-          border: unset;
-
-          :first-child {
-            margin-bottom: 15px;
-          }
-
-          button {
-            margin: 0;
-            width: 100%;
-            justify-content: center;
-          }
-          a {
-            color: #000;
           }
         }
       }

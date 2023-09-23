@@ -2,10 +2,9 @@
   <section id="page-layout">
     <user-alert />
     <login-modal />
-    <navbar />
+    <eth-navbar />
     <!-- pages -->
     <NuxtPage />
-    <eth-footer />
   </section>
 </template>
 

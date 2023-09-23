@@ -1,7 +1,7 @@
 <template>
   <font-awesome-icon
     class="fa --icon"
-    :style="{ '--fa-width': `${width}px`, '--fa-height': `${height}px` }"
+    :style="{ '--fa-width': (width && `${width}px`) || 'normal', '--fa-height': (height && `${height}px`) || 'normal' }"
     :icon="icon"
     :width="width"
     :height="height"
@@ -25,9 +25,4 @@ defineProps({
 })
 </script>
 
-<style>
-.fa {
-  width: var(--fa-width);
-  height: var(--fa-height);
-}
-</style>
+<style></style>

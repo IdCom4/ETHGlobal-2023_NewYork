@@ -1,6 +1,6 @@
 <template>
-  <section :id="`section-${id}`" class="vmc-input" :class="[customTheme]">
-    <div class="vmc-input-wrapper" @focusout="dispatchBlurEvent">
+  <section :id="`section-${id}`" class="eth-input" :class="[customTheme]">
+    <div class="eth-input-wrapper" @focusout="dispatchBlurEvent">
       <!-- type textarea -->
       <div v-if="type === InputTypes.TEXTAREA" :class="[modalStyle == true ? 'modal-input-wrapper' : 'input-wrapper-textaera', customTheme]">
         <p class="editable-text-container">
@@ -31,6 +31,7 @@
             modalStyle === true ? 'modal-label' : 'label',
             { disabled: disabled }
           ]"
+          :style="modalStyle && backgroundColor ? '--bg: ' + backgroundColor : ''"
         >
           {{ label }}
         </label>
@@ -96,7 +97,11 @@
         </div>
 
         <!-- default label -->
-        <label :for="id" :class="[modalStyle == true ? 'modal-label' : 'label', { disabled: disabled }]">
+        <label
+          :for="id"
+          :class="[modalStyle == true ? 'modal-label' : 'label', { disabled: disabled }]"
+          :style="modalStyle && backgroundColor ? '--bg: ' + backgroundColor : ''"
+        >
           {{ label }}
         </label>
         <slot />
@@ -211,7 +216,7 @@ const props = defineProps({
   /* Optional */
   id: {
     type: String,
-    default: () => `vmc-input_id-${Math.random().toString().replace('.', '-')}`
+    default: () => `eth-input_id-${Math.random().toString().replace('.', '-')}`
   },
   name: {
     type: String,
@@ -278,6 +283,10 @@ const props = defineProps({
   theme: {
     type: String,
     default: 'white'
+  },
+  backgroundColor: {
+    type: String,
+    default: ''
   }
 })
 
@@ -310,7 +319,7 @@ const updatableSelectOptions = ref<IInputSelectOptions[]>([])
 /* >=========== TEXTAREA TYPE VARIABLES */
 const textareaEditableRef = ref<HTMLElement | null>(null)
 
-// try to transform the vmc-input value to a string so that it can be shown to the user in a readable format
+// try to transform the eth-input value to a string so that it can be shown to the user in a readable format
 const getValueAsPrintableString = (value: unknown): string => {
   const Types = useUtils().types
 
@@ -354,7 +363,7 @@ if (props.max) {
 /* >=========== HANDLE INPUT'S VALUE UPDATE */
 // in this component, based on the type of input, the value that is manipulated by the v-model can be updated by the user in different ways
 // it can be updated directly inside the input, like it would normally be the case with a regular input
-// but it can also be updated via custom ways, like the vmc-input-dropdown
+// but it can also be updated via custom ways, like the eth-input-dropdown
 // those custom ways deals with non-textual values, and updates the v-model on their own
 // and the textual value of the input shown to the user has only a diplay or interactivity purposes. In this case the textual value is not to be emitted
 
@@ -705,7 +714,7 @@ onMounted(() => {
   --placeholder-content: 'test ici';
 }
 
-.vmc-input {
+.eth-input {
   position: relative;
   margin: 10px 0;
   padding: 0;
@@ -714,12 +723,16 @@ onMounted(() => {
 
   &.dark-theme {
     .icon {
-      color: transparent;
+      color: white;
     }
-    .modal-input-wrapper .modal-input {
+    .modal-input-wrapper .modal-input,
+    .container .input-def {
       background-color: transparent;
-      border-color: $white;
       color: $white;
+    }
+
+    .modal-input-wrapper .modal-input {
+      border-color: $white;
     }
   }
   &-wrapper {
@@ -751,11 +764,6 @@ onMounted(() => {
   input[type='number'] {
     -moz-appearance: textfield;
     appearance: textfield;
-    /* Firefox */
-  }
-
-  input[type='date'] {
-    cursor: text;
     /* Firefox */
   }
 
@@ -958,6 +966,8 @@ onMounted(() => {
     }
 
     .modal-label {
+      --bg: white;
+      background-color: var(--bg);
       position: absolute;
       top: -25%;
       width: fit-content;
@@ -965,7 +975,7 @@ onMounted(() => {
       margin-left: 10px;
       font-family: 'Nunito';
       font-size: 14px;
-      background-color: #fff;
+      // background-color: #fff;
     }
 
     .modal-icon {
@@ -1286,7 +1296,7 @@ small.checkbox-error {
   left: calc(50% - 2px);
 }
 
-.vmc-input-wrapper {
+.eth-input-wrapper {
   position: relative;
 }
 </style>

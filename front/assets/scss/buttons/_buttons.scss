@@ -95,8 +95,14 @@ button {
     --background-color: #{$color-offwhite} !important;
     --font-color: #{$color-light-grey} !important;
 
-    box-shadow: 0 0 10px $color-light-grey !important;
+    // box-shadow: 0 0 10px $color-light-grey !important;
+    box-shadow: none !important;
     cursor: not-allowed !important;
+    
+    &:hover {
+      box-shadow: none !important;
+
+    }
   }
 
   &.--load {
@@ -119,7 +125,6 @@ button {
       width: 22px;
       height: 22px;
       margin: -11px;
-      background-image: url('./../../img/01_ValueMyCar_SymbolePositif_RVB.png');
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;
