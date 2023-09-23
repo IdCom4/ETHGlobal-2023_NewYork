@@ -4,7 +4,7 @@ export class DataProcesser {
     return appTransactions.map((transaction: ITransaction) => transaction.assetId).removeDuplicates()
   }
 
-  public static getAssetContributionsFromAssetTransations(assetTransactions: ITransaction[]): Record<TContributorEntry, TProportion> {
+  public static getAssetContributionsFromAssetTransactions(assetTransactions: ITransaction[]): Record<TContributorEntry, TProportion> {
     // get each entry's amount
     const assetEntriesAmount: Record<TContributorEntry, number> = {}
     for (const transaction of assetTransactions) {
