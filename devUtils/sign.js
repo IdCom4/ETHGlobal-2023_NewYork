@@ -11,7 +11,7 @@ async function run()
     console.log("walled addres = ", wallet.address)
     console.log("signedMessage = ", await wallet.signMessage(message))
     console.log("hashedMessage = ", ethers.hashMessage(message))
-    console.log("verifiedMessage", verifyMessage(message,   await wallet.signMessage(message)))  
+    console.log("verifiedMessage", verifyMessage(message, await wallet.signMessage(message)))  
     wallet.signMessage
 
 }
