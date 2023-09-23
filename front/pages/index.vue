@@ -59,19 +59,6 @@
       </div>
     </section>
 
-    <!-- <i-d-kit-widget
-      app_id="app_GBkZ1KlVUdFTjeMXKlVUdFT"
-      action="vote_1"
-      signal="user_value"
-      :on-success="(value: unknown) => console.log({ value })"
-      :credential_types="['orb', 'phone']"
-      enable-telemetry
-    >
-    </i-d-kit-widget> -->
-    <!-- <button :data="{ open }" @click="open">Click me</button> -->
-
-    <!-- <my-component /> -->
-
     <eth-modal max-width="500px" :is-open="isReportOpen" @close="isReportOpen = false">
       <h3>Who's the original artist of this song ?</h3>
       <autocomplete-input
