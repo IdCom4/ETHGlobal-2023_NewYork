@@ -147,11 +147,10 @@ export default {
     }
 
     async function processDelegatedContribution() {
-      const signature = await sign(fileId.value, userInput.value)
-
       fileId.value = localStorage.getItem('assetId') || ''
       userInput.value = localStorage.getItem('userInput') || ''
       if (!fileId.value || !userInput.value) return console.error('salut')
+      const signature = await sign(fileId.value, userInput.value)
 
       const userAddress = getAccount().address
 
@@ -169,10 +168,11 @@ export default {
 
       try {
         const transaction = await contract.contribute(fileId.value, userInput.value, contractAddress, userAddress, hashedMessage, signature)
+        console.log('transact = ', transaction)
         const transactionRes = await transaction.wait()
         useAlertStore().sendAlert(AlertStatuses.SUCCESS, 'Transaction Hash: ' + transactionRes.transactionHash, false, 5000)
       } catch (e) {
-        useAlertStore().sendAlert(AlertStatuses.ERROR, 'Error in the transaction : ' + e, false, 5000)
+        useAlertStore().sendAlert(AlertStatuses.ERROR, 'Error in the transaction : ' + e, false, 25000)
       }
       loading.value = false
 
@@ -187,11 +187,7 @@ export default {
       //   signature,
       //   contractAddress
       // )
-      console.log('🚀 ~ file: index.vue:146 ~ processDelegatedContribution ~ transaction:', transaction)
 
-      console.log('🚀 ~ file: index.vue:149 ~ processDelegatedContribution ~ transactionRes:', transactionRes)
-
-      useAlertStore().sendAlert(AlertStatuses.SUCCESS, transactionRes.transactionHash)
       window.history.replaceState(null, '', window.location.pathname)
       localStorage.setItem('assetId', '')
       localStorage.setItem('userInput', '')
