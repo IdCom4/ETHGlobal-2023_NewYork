@@ -130,7 +130,7 @@ export default {
     }
 
     async function sign(fileId: string, userInput: string) {
-      messageToSign.value = `AssetId: ${fileId}\n\nUserInput${userInput}`
+      messageToSign.value = `AssetId: ${fileId}\n\nUserInput: ${userInput}`
 
       await connectToWallet()
 
@@ -184,9 +184,9 @@ export default {
       console.log('🚀 ~ file: index.vue:149 ~ processDelegatedContribution ~ transactionRes:', transactionRes)
 
       useAlertStore().sendAlert(AlertStatuses.SUCCESS, transactionRes.transactionHash)
-      // window.history.replaceState(null, '', window.location.pathname)
-      // localStorage.setItem('assetId', '')
-      // localStorage.setItem('userInput', '')
+      window.history.replaceState(null, '', window.location.pathname)
+      localStorage.setItem('assetId', '')
+      localStorage.setItem('userInput', '')
     }
 
     async function submit() {
