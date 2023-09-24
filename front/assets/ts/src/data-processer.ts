@@ -9,8 +9,8 @@ export class DataProcesser {
     // get each entry's amount
     const assetEntriesAmount: Record<TContributorEntry, number> = {}
     for (const transaction of assetTransactions) {
-      if (assetEntriesAmount[transaction.entry]) assetEntriesAmount[transaction.entry] += 1
-      else assetEntriesAmount[transaction.entry] = 1
+      if (assetEntriesAmount[transaction.userInput]) assetEntriesAmount[transaction.userInput] += 1
+      else assetEntriesAmount[transaction.userInput] = 1
     }
 
     // get proportions
@@ -34,7 +34,7 @@ export class DataProcesser {
   }
 
   public static getContributorContributionsFromTransactions(transactions: ITransaction[]): Record<TAssetId, TContributorEntry>[] {
-    return transactions.map((transaction: ITransaction) => ({ [transaction.assetId]: transaction.entry }))
+    return transactions.map((transaction: ITransaction) => ({ [transaction.assetId]: transaction.userInput }))
   }
 
   public static getContributorReputationFromAssetsTransactionsWhereContributorContributed(
@@ -58,16 +58,16 @@ export class DataProcesser {
 
   public static getContributionScoreFromAssetTransactions(assetTransactions: ITransaction[], contributorAddress: string): number {
     // start reputation computation at contributor's entry
-    const entryIndex = assetTransactions.findIndex((transaction: ITransaction) => transaction.contributorAddress === contributorAddress)
+    const entryIndex = assetTransactions.findIndex((transaction: ITransaction) => transaction.userAddress === contributorAddress)
 
     if (entryIndex < 0) return 0
 
-    const contributorEntry = assetTransactions[entryIndex].entry
+    const contributorEntry = assetTransactions[entryIndex].userInput
     let contributorScore = 0
 
     // compare contributor entry to the later contributor's
     for (let index = entryIndex + 1; index < assetTransactions.length; index++)
-      contributorScore += assetTransactions[index].entry === contributorEntry ? 1 : -1
+      contributorScore += assetTransactions[index].userInput === contributorEntry ? 1 : -1
 
     return contributorScore
   }
@@ -77,14 +77,14 @@ export class DataProcesser {
     const assetsTransactions = DataProcesser.regroupAssetsTransactionsFromAllTransactions(appTransactions)
 
     // get all contributors
-    const contributorsAddresses = appTransactions.map((transaction: ITransaction) => transaction.contributorAddress).removeDuplicates()
+    const contributorsAddresses = appTransactions.map((transaction: ITransaction) => transaction.userAddress).removeDuplicates()
 
     const contributorsReputation: Record<TContributorAddress, TContributorReputation> = {}
     // for each contributor
     for (const contributorAddress of contributorsAddresses) {
       // get its reputation
       for (const transactions of Object.values(assetsTransactions)) {
-        if (transactions.some((transaction: ITransaction) => transaction.contributorAddress === contributorAddress))
+        if (transactions.some((transaction: ITransaction) => transaction.userAddress === contributorAddress))
           contributorsReputation[contributorAddress] = DataProcesser.getContributorReputationFromAssetsTransactionsWhereContributorContributed(
             contributorAddress,
             transactions

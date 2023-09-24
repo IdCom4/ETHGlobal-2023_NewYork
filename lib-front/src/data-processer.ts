@@ -1,5 +1,6 @@
-export class DataProcesser {
+import './extensions/array.extension'
 
+export class DataProcesser {
   public static getAppAssetsIdsFromTransactions(appTransactions: ITransaction[]): string[] {
     return appTransactions.map((transaction: ITransaction) => transaction.assetId).removeDuplicates()
   }
@@ -8,15 +9,14 @@ export class DataProcesser {
     // get each entry's amount
     const assetEntriesAmount: Record<TContributorEntry, number> = {}
     for (const transaction of assetTransactions) {
-        if (assetEntriesAmount[transaction.entry]) assetEntriesAmount[transaction.entry] += 1
-        else assetEntriesAmount[transaction.entry] = 1
+      if (assetEntriesAmount[transaction.entry]) assetEntriesAmount[transaction.entry] += 1
+      else assetEntriesAmount[transaction.entry] = 1
     }
 
     // get proportions
     const totalAmount = assetTransactions.length
     const assetEntriesProportion: Record<TContributorEntry, TProportion> = {}
-    for (const [entry, amount] of Object.entries(assetEntriesAmount))
-        assetEntriesProportion[entry] = amount / totalAmount * 100
+    for (const [entry, amount] of Object.entries(assetEntriesAmount)) assetEntriesProportion[entry] = (amount / totalAmount) * 100
 
     return assetEntriesProportion
   }
@@ -37,10 +37,12 @@ export class DataProcesser {
     return transactions.map((transaction: ITransaction) => ({ [transaction.assetId]: transaction.entry }))
   }
 
-  public static getContributorReputationFromAssetsTransactionsWhereContributorContributed(contributorAddress: string, appTransactions: ITransaction[]): TContributorReputation {
-
+  public static getContributorReputationFromAssetsTransactionsWhereContributorContributed(
+    contributorAddress: string,
+    appTransactions: ITransaction[]
+  ): TContributorReputation {
     // regroup transactions
-    const assetsTransactions = DataProcesser.regroupAssetsTransactionsFromAllTransactions(appTransactions) 
+    const assetsTransactions = DataProcesser.regroupAssetsTransactionsFromAllTransactions(appTransactions)
 
     const contributorAssetScores: number[] = []
     for (const transactions of Object.values(assetsTransactions)) {
@@ -48,13 +50,12 @@ export class DataProcesser {
       if (assetScore) contributorAssetScores.push(assetScore)
     }
 
-    if (contributorAssetScores.length) return 0
+    if (!contributorAssetScores.length) return 0
 
-    
     // add every scores and multiply by the amount of contribution to enforce contributions amount impact
-    return contributorAssetScores.reduce((prev, current) => prev + current) * (1 / contributorAssetScores.length)  
+    return contributorAssetScores.reduce((prev, current) => prev + current, 0) * (1 / contributorAssetScores.length)
   }
-  
+
   public static getContributionScoreFromAssetTransactions(assetTransactions: ITransaction[], contributorAddress: string): number {
     // start reputation computation at contributor's entry
     const entryIndex = assetTransactions.findIndex((transaction: ITransaction) => transaction.contributorAddress === contributorAddress)
@@ -65,7 +66,7 @@ export class DataProcesser {
     let contributorScore = 0
 
     // compare contributor entry to the later contributor's
-    for (let index = entryIndex + 1; entryIndex < assetTransactions.length; index++)
+    for (let index = entryIndex + 1; index < assetTransactions.length; index++)
       contributorScore += assetTransactions[index].entry === contributorEntry ? 1 : -1
 
     return contributorScore
@@ -74,8 +75,9 @@ export class DataProcesser {
   public static getAppAllContributorReputations(appTransactions: ITransaction[]): Record<TContributorAddress, TContributorReputation> {
     // regroup transactions
     const assetsTransactions = DataProcesser.regroupAssetsTransactionsFromAllTransactions(appTransactions)
+
     // get all contributors
-    const contributorsAddresses = appTransactions.map((transaction: ITransaction) => transaction.contributorAddress).removeDuplicates() 
+    const contributorsAddresses = appTransactions.map((transaction: ITransaction) => transaction.contributorAddress).removeDuplicates()
 
     const contributorsReputation: Record<TContributorAddress, TContributorReputation> = {}
     // for each contributor
@@ -83,11 +85,13 @@ export class DataProcesser {
       // get its reputation
       for (const transactions of Object.values(assetsTransactions)) {
         if (transactions.some((transaction: ITransaction) => transaction.contributorAddress === contributorAddress))
-          contributorsReputation[contributorAddress] = DataProcesser.getContributorReputationFromAssetsTransactionsWhereContributorContributed(contributorAddress, transactions)
+          contributorsReputation[contributorAddress] = DataProcesser.getContributorReputationFromAssetsTransactionsWhereContributorContributed(
+            contributorAddress,
+            transactions
+          )
       }
     }
 
     return contributorsReputation
   }
-
 }

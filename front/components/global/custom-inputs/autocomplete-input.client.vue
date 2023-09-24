@@ -213,10 +213,10 @@ document.addEventListener('click', (event: Event) => {
     .relevant-options {
       $option-height: 12px;
       $option-vertical-padding: 10px;
-      position: absolute;
+      // position: absolute;
       top: 100%;
       left: 0;
-      z-index: 1000;
+      z-index: 10000;
       width: 100%;
       max-height: calc(($option-height + $option-vertical-padding * 2) * var(--option-display-limit));
       overflow-y: scroll;

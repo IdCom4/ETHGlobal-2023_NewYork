@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="isOpen" ref="modalMask" class="modal-mask" :style="`--max-width: ${maxWidth}`" @mousedown="closeModalOutside">
+      <div v-if="isOpen" ref="modalMask" class="modal-mask" :style="`--max-width: ${maxWidth}; --height: ${height}`" @mousedown="closeModalOutside">
         <div :class="['modal-wrapper', confirmationStyle ? 'confirmationStyle' : '']" @mousedown.stop>
           <div class="modal-container">
             <h5>{{ title }}</h5>
@@ -33,6 +33,10 @@ defineProps({
   maxWidth: {
     type: String,
     default: '90%'
+  },
+  height: {
+    type: String,
+    default: 'fit-content'
   },
   id: {
     type: String,
@@ -75,6 +79,7 @@ const closeModalOutside = (event: MouseEvent) => {
   background-color: #fff;
   padding: 20px;
   max-width: var(--max-width);
+  height: var(--height);
   width: 90%;
   max-height: 95%;
   position: relative;

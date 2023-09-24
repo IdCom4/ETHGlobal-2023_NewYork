@@ -4,7 +4,7 @@ export type TValidatorPayload<T> = { validate: TValidatorValidateFunction<T>; ge
 export type TFormValidatorPayload<T> = { [K in keyof T]: TValidatorPayload<T[K]> }
 
 export const useValidator = () => ({
-  createValidator: <T>(validateFunction: TValidatorValidateFunction<T>, valueGetter?: () => T): Validator<T> => {
+  createValidator: <T>(validateFunction: TValidatorValidateFunction<T>, valueGetter?: TValidatorValueGetter<T>): Validator<T> => {
     return new Validator(validateFunction, valueGetter)
   },
   createFormValidator: <T extends object>(data: TFormValidatorPayload<T>): FormValidator<T> => {
