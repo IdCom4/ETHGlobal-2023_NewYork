@@ -1,11 +1,10 @@
 <template>
   <section id="page-layout">
     <user-alert />
-    <login-modal />
     <eth-navbar />
-    <button @click="connectWallet">Connect</button>
+    <!-- <button @click="connectWallet">Connect</button>
     <button @click="sign">Sign</button>
-    <button @click="signAndTransact">Transact</button>
+    <button @click="signAndTransact">Transact</button> -->
     <!-- pages -->
     <NuxtPage />
   </section>
