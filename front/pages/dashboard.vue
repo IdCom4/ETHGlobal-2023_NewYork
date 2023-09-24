@@ -42,8 +42,12 @@
         />
       </div>
 
-      <button class="btn_call-to-action --inverted" :class="{ btn_disabled: !allAdditionalValueAreFilled() }" @click="search">Search</button>
-      <p style="cursor: pointer; text-decoration: underline;" @click="clearInputs">Clear research</p>
+      <button v-if="!loading" class="btn_call-to-action --inverted" :class="{ btn_disabled: !allAdditionalValueAreFilled() }" @click="search">
+        Search
+      </button>
+      <eth-loader v-else size-css="30px" style="margin: 0 15px;" />
+
+      <p style="cursor: pointer; text-decoration: underline;" @click="clearInputs">Clear search</p>
     </div>
 
     <div v-if="sourceType && sourceDataType && datas !== null && datas !== undefined" class="data-wrapper">
@@ -131,6 +135,7 @@ enum DataTypes {
   APP_CONTRIBUTORS_REPUTATION = 'APP_CONTRIBUTORS_REPUTATION'
 }
 
+const loading = ref<boolean>(false)
 const formTree = ref({
   sourceTypes: {
     CONTRIBUTOR: {
@@ -228,12 +233,15 @@ function allAdditionalValueAreFilled() {
 async function search() {
   if (!sourceType.value || !sourceDataType.value) return
 
+  loading.value = true
   // @ts-ignore
   const data = await formTree.value.sourceTypes[sourceType.value].dataTypes[sourceDataType.value].searchMethod.apply(
     null,
     // @ts-ignore
     requiredAdditionalValues.value.map((required) => required.value)
   )
+
+  loading.value = false
 
   datas.value = data
 }

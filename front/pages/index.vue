@@ -74,7 +74,8 @@
       />
 
       <div style="width: 100%; display: flex; justify-content: center; margin-top: 30px;">
-        <button class="btn_call-to-action" style="margin: auto" @click="submit">Submit</button>
+        <button v-if="!loading" class="btn_call-to-action" style="margin: auto" @click="submit">Submit</button>
+        <eth-loader v-else size-css="30px" style="margin: auto;" />
       </div>
     </eth-modal>
   </section>
@@ -94,6 +95,7 @@ export default {
   components: {},
   setup() {
     const isReportOpen = ref<boolean>(false)
+    const loading = ref<boolean>(false)
     const currentMusicIndex = ref<number>(0)
     const selectedArtist = ref<IArtist>()
     const messageToSign = ref<string>('')
@@ -118,8 +120,6 @@ export default {
     if (worldcoinProof.proof) {
       processDelegatedContribution()
     }
-
-    console.log('🚀 ~ file: index.vue:114 ~ setup ~ worldcoinProof:', worldcoinProof)
 
     function previous() {
       currentMusicIndex.value = currentMusicIndex.value ? currentMusicIndex.value - 1 : musics.length - 1
@@ -166,7 +166,17 @@ export default {
 
       const unpackedProof = ethers.utils.defaultAbiCoder.decode(['uint256[8]'], worldcoinProof.proof)[0].map((bigNumerObj) => bigNumerObj._hex)
 
-      const transaction = await contract.contribute(fileId.value, userInput.value, contractAddress, userAddress, hashedMessage, signature)
+      loading.value = true
+
+      try {
+        const transaction = await contract.contribute(fileId.value, userInput.value, contractAddress, userAddress, hashedMessage, signature)
+        const transactionRes = await transaction.wait()
+        useAlertStore().sendAlert(AlertStatuses.SUCCESS, 'Transaction Hash: ' + transactionRes.transactionHash, false, 5000)
+      } catch (e) {
+        useAlertStore().sendAlert(AlertStatuses.ERROR, 'Error in the transaction : ' + e, false, 5000)
+      }
+      loading.value = false
+
       // const transaction = await contract.verifyAndExecute(
       //   worldcoinProof.merkle_root,
       //   worldcoinProof.nullifier_hash,
@@ -179,11 +189,9 @@ export default {
       //   contractAddress
       // )
       console.log('🚀 ~ file: index.vue:146 ~ processDelegatedContribution ~ transaction:', transaction)
-      if (!transaction) return
-      const transactionRes = await transaction.wait()
+
       console.log('🚀 ~ file: index.vue:149 ~ processDelegatedContribution ~ transactionRes:', transactionRes)
 
-      useAlertStore().sendAlert(AlertStatuses.SUCCESS, transactionRes.transactionHash)
       // window.history.replaceState(null, '', window.location.pathname)
       // localStorage.setItem('assetId', '')
       // localStorage.setItem('userInput', '')
@@ -198,8 +206,11 @@ export default {
       localStorage.setItem('assetId', fileId.value)
       localStorage.setItem('userInput', userInput.value)
 
-      if (worldcoinProof.proof) processDelegatedContribution()
-      else redirectToWorldCoin()
+      if (worldcoinProof.proof) {
+        await processDelegatedContribution()
+      } else {
+        redirectToWorldCoin()
+      }
     }
 
     return {
@@ -208,6 +219,7 @@ export default {
       artists,
       musics,
 
+      loading,
       isReportOpen,
       currentMusicIndex,
       selectedArtist,
@@ -220,18 +232,6 @@ export default {
     }
   }
 }
-
-// enum CredentialType {
-//   Orb = 'orb',
-//   Phone = 'phone'
-// }
-
-// interface IHandleVerifyPayload {
-//   proof: string
-//   merkle_root: string
-//   nullifier_hash: string
-//   credential_type: CredentialType
-// }
 </script>
 
 <style lang="scss" scoped>

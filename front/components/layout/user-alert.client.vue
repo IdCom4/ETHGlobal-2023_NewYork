@@ -45,7 +45,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-$alertDefaultWidth: 300px;
+$alertDefaultWidth: 535px;
 $alertPadding: 15px;
 
 #user-alert {

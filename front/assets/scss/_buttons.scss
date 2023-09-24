@@ -33,6 +33,35 @@ button {
     cursor: not-allowed;
   }
 
+  &.--load {
+    --background-color: #{#e6e6e6ee};
+    --font-color: #{#d5d5d576};
+
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+    height: auto;
+    filter: grayscale(40%);
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50px, -50px);
+      width: 22px;
+      height: 22px;
+      margin: -11px;
+      background-image: url('./../../img/01_ValueMyCar_SymbolePositif_RVB.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      filter: contrast(200%) brightness(125%);
+      animation: spin 2s infinite linear;
+    }
+  }
+
   &:hover:not([disabled]):not(.disabled) {
     box-shadow: 0 5px 8px 0 rgba(122, 122, 122, 0.16), 0 4px 8px 0 rgba(122, 122, 122, 0.16) !important;
     background-color: var(--hover-background-color) !important;
