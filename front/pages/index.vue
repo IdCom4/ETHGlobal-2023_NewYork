@@ -147,7 +147,6 @@ export default {
     }
 
     async function processDelegatedContribution() {
-      await setTimeout(() => {}, 100)
       const signature = await sign(fileId.value, userInput.value)
 
       fileId.value = localStorage.getItem('assetId') || ''
@@ -164,7 +163,7 @@ export default {
       const contract = new ethers.Contract(contractAddress, contractAbi, wallet)
       const hashedMessage = ethers.utils.hashMessage(messageToSign.value)
 
-      const unpackedProof = ethers.utils.defaultAbiCoder.decode(['uint256[8]'], worldcoinProof.proof)[0].map((bigNumerObj) => bigNumerObj._hex)
+      // const unpackedProof = ethers.utils.defaultAbiCoder.decode(['uint256[8]'], worldcoinProof.proof)[0].map((bigNumerObj) => bigNumerObj._hex)
 
       loading.value = true
 

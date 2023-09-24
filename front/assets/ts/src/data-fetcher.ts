@@ -2,7 +2,7 @@ export class DataFetcher {
   public static async fetchAppTransactions(appAddress: string): Promise<ITransaction[]> {
     // graph query
     const { data, error } = await useRequest().post<{ data: { contributes: ITransaction[] } }>(
-      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.2',
+      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.3',
       {
         body: {
           query:
@@ -21,7 +21,7 @@ export class DataFetcher {
   public static async fetchAssetTransactions(assetId: string): Promise<ITransaction[]> {
     // graph query
     const { data, error } = await useRequest().post<{ data: { contributes: ITransaction[] } }>(
-      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.2',
+      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.3',
       {
         body: {
           query: 'query MyQuery ($assetId: String) { contributes (where: {assetId: $assetId}) { assetId userInput assetId userAddress } }',
@@ -39,7 +39,7 @@ export class DataFetcher {
   public static async fetchContributorTransactions(userAddress: string): Promise<ITransaction[]> {
     // graph query
     const { data, error } = await useRequest().post<{ data: { contributes: ITransaction[] } }>(
-      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.2',
+      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.3',
       {
         body: {
           query:
@@ -58,7 +58,7 @@ export class DataFetcher {
   public static async fetchContributorAppTransactions(userAddress: string, appAddress: string): Promise<ITransaction[]> {
     // graph query
     const { data, error } = await useRequest().post<{ data: { contributes: ITransaction[] } }>(
-      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.2',
+      'https://api.studio.thegraph.com/query/53565/wisdom/v0.0.3',
       {
         body: {
           query:
