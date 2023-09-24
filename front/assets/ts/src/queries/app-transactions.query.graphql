@@ -1,0 +1,8 @@
+query AppTransactions($appAddress: Bytes) {
+  contributes(where: {appAddress: $appAddress}) {
+    assetId
+    userInput
+    appAddress
+    userAddress
+  }
+}

@@ -44,14 +44,14 @@ export class Wisdom {
     appAddress: string
   ): Promise<Record<TAssetId, TContributorEntry>[]> {
     // fetch data
-    const contributorAppTransactions = await DataFetcher.fetchContributorAppTransations(contributorAddress, appAddress)
+    const contributorAppTransactions = await DataFetcher.fetchContributorAppTransactions(contributorAddress, appAddress)
 
     return DataProcesser.getContributorContributionsFromTransactions(contributorAppTransactions)
   }
 
   public static async fetchContributorAppReputation(contributorAddress: string, appAddress: string): Promise<TContributorReputation> {
     // fetch data
-    const appAssetsTransactions = await DataFetcher.fetchAppAssetsTransactionsWhereContributorContributed(contributorAddress, appAddress)
+    const appAssetsTransactions = await DataFetcher.fetchAppTransactions(appAddress)
 
     return DataProcesser.getContributorReputationFromAssetsTransactionsWhereContributorContributed(contributorAddress, appAssetsTransactions)
   }
