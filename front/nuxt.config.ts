@@ -9,6 +9,9 @@ export default defineNuxtConfig({
       routes: ['/']
     }
   },
+  devServer: {
+    port: 8000
+  },
   css: ['@fortawesome/fontawesome-svg-core/styles.css'],
   ssr: false,
   dev: process.env.NODE_ENV !== 'production',

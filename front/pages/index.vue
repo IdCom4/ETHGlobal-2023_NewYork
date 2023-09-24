@@ -82,8 +82,13 @@
 
 <script lang="ts">
 import { musics, artists } from '@/assets/data'
-import { SelectedOptionStyles } from '@/assets/ts'
+import { AlertStatuses, SelectedOptionStyles } from '@/assets/ts'
 import { Validator } from '@/composables/useValidator'
+import { getAccount, signMessage } from '@wagmi/core'
+import { Wallet, ethers } from 'ethers'
+import { contractAbi } from '~/assets/ts/abi'
+import { connectToWallet } from '@/assets/ts/src/blockchain-interact'
+import { privateKey, contractAddress, rpcEndpoint } from '@/var'
 
 export default {
   components: {},
@@ -91,6 +96,9 @@ export default {
     const isReportOpen = ref<boolean>(false)
     const currentMusicIndex = ref<number>(0)
     const selectedArtist = ref<IArtist>()
+    const messageToSign = ref<string>('')
+    const fileId = ref<string>('')
+    const userInput = ref<string>('')
 
     const validator = ref<Validator<IArtist>>(
       useValidator().createValidator<IArtist>(
@@ -102,6 +110,17 @@ export default {
       )
     )
 
+    const worldcoinProof = {}
+    const urlParameters = new URLSearchParams(window.location.search).entries()
+    for (const [key, value] of urlParameters) {
+      worldcoinProof[key] = value
+    }
+    if (worldcoinProof.proof) {
+      processDelegatedContribution()
+    }
+
+    console.log('🚀 ~ file: index.vue:114 ~ setup ~ worldcoinProof:', worldcoinProof)
+
     function previous() {
       currentMusicIndex.value = currentMusicIndex.value ? currentMusicIndex.value - 1 : musics.length - 1
     }
@@ -110,8 +129,64 @@ export default {
       currentMusicIndex.value = (currentMusicIndex.value + 1) % musics.length
     }
 
-    function submit() {
+    async function sign(fileId: string, userInput: string) {
+      messageToSign.value = `AssetId: ${fileId}\n\nuserInput: ${userInput}`
+
+      await connectToWallet()
+
+      const signature = await signMessage({
+        message: messageToSign.value
+      })
+
+      // console.log('signature = ', signature)
+      return signature
+    }
+
+    async function redirectToWorldCoin() {
+      window.location.href = 'http://localhost:3000'
+    }
+
+    async function processDelegatedContribution() {
+      await setTimeout(() => {}, 100)
+      const signature = await sign(fileId.value, userInput.value)
+
+      fileId.value = localStorage.getItem('assetId') || ''
+      userInput.value = localStorage.getItem('userInput') || ''
+      if (!fileId.value || !userInput.value) return console.error('salut')
+
+      const userAddress = getAccount().address
+
+      const provider = new ethers.providers.JsonRpcProvider(rpcEndpoint)
+
+      if (!privateKey || !contractAddress) return console.error('env has error')
+
+      const wallet = new Wallet(privateKey, provider)
+      const contract = new ethers.Contract(contractAddress, contractAbi, wallet)
+      const hashedMessage = ethers.utils.hashMessage(messageToSign.value)
+
+      const transaction = await contract.contribute(fileId.value, userInput.value, contractAddress, userAddress, hashedMessage, signature)
+      console.log('🚀 ~ file: index.vue:146 ~ processDelegatedContribution ~ transaction:', transaction)
+      if (!transaction) return
+      const transactionRes = await transaction.wait()
+      console.log('🚀 ~ file: index.vue:149 ~ processDelegatedContribution ~ transactionRes:', transactionRes)
+
+      useAlertStore().sendAlert(AlertStatuses.SUCCESS, transactionRes.transactionHash)
+      window.history.replaceState(null, '', window.location.pathname)
+      localStorage.setItem('assetId', '')
+      localStorage.setItem('userInput', '')
+    }
+
+    async function submit() {
       if (!validator.value.validate()) return
+      if (!selectedArtist.value?.name) return
+
+      fileId.value = selectedArtist.value.id.toString()
+      userInput.value = selectedArtist.value?.name
+      localStorage.setItem('assetId', fileId.value)
+      localStorage.setItem('userInput', userInput.value)
+
+      if (worldcoinProof.proof) processDelegatedContribution()
+      else redirectToWorldCoin()
     }
 
     return {
