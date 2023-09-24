@@ -14,20 +14,11 @@ export const contractAbi = [
     inputs: [
       { indexed: false, internalType: 'string', name: 'assetId', type: 'string' },
       { indexed: false, internalType: 'string', name: 'userInput', type: 'string' },
-      { indexed: false, internalType: 'address', name: 'appAdress', type: 'address' }
+      { indexed: false, internalType: 'address', name: 'appAdress', type: 'address' },
+      { indexed: false, internalType: 'address', name: 'userAddress', type: 'address' }
     ],
     name: 'Contribute',
     type: 'event'
-  },
-  {
-    inputs: [
-      { internalType: 'bytes32', name: 'a', type: 'bytes32' },
-      { internalType: 'bytes32', name: 'b', type: 'bytes32' }
-    ],
-    name: 'areTheyEqual',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'pure',
-    type: 'function'
   },
   {
     inputs: [
@@ -41,16 +32,6 @@ export const contractAbi = [
     name: 'contribute',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      { internalType: 'string', name: 'assetId', type: 'string' },
-      { internalType: 'string', name: 'userInput', type: 'string' }
-    ],
-    name: 'getMessageHash',
-    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
-    stateMutability: 'pure',
     type: 'function'
   },
   {
@@ -91,6 +72,34 @@ export const contractAbi = [
     name: 'verifyAndExecute',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'root', type: 'uint256' },
+      { internalType: 'uint256', name: 'nullifierHash', type: 'uint256' },
+      { internalType: 'uint256[8]', name: 'proof', type: 'uint256[8]' },
+      { internalType: 'string', name: 'assetId', type: 'string' },
+      { internalType: 'string', name: 'userInput', type: 'string' },
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'bytes32', name: 'messageHash', type: 'bytes32' },
+      { internalType: 'bytes', name: 'userSignature', type: 'bytes' },
+      { internalType: 'address', name: 'appAddress', type: 'address' }
+    ],
+    name: 'verifyAndExecuteReal',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: 'message', type: 'string' },
+      { internalType: 'bytes32', name: 'messageHash', type: 'bytes32' },
+      { internalType: 'bytes', name: 'userSignature', type: 'bytes' }
+    ],
+    name: 'verifyMsgHash',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
     type: 'function'
   },
   {

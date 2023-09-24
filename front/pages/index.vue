@@ -130,7 +130,7 @@ export default {
     }
 
     async function sign(fileId: string, userInput: string) {
-      messageToSign.value = `AssetId: ${fileId}\n\nuserInput: ${userInput}`
+      messageToSign.value = `AssetId: ${fileId}\n\nUserInput${userInput}`
 
       await connectToWallet()
 
@@ -164,16 +164,29 @@ export default {
       const contract = new ethers.Contract(contractAddress, contractAbi, wallet)
       const hashedMessage = ethers.utils.hashMessage(messageToSign.value)
 
+      const unpackedProof = ethers.utils.defaultAbiCoder.decode(['uint256[8]'], worldcoinProof.proof)[0].map((bigNumerObj) => bigNumerObj._hex)
+
       const transaction = await contract.contribute(fileId.value, userInput.value, contractAddress, userAddress, hashedMessage, signature)
+      // const transaction = await contract.verifyAndExecute(
+      //   worldcoinProof.merkle_root,
+      //   worldcoinProof.nullifier_hash,
+      //   unpackedProof,
+      //   fileId.value,
+      //   userInput.value,
+      //   userAddress,
+      //   hashedMessage,
+      //   signature,
+      //   contractAddress
+      // )
       console.log('🚀 ~ file: index.vue:146 ~ processDelegatedContribution ~ transaction:', transaction)
       if (!transaction) return
       const transactionRes = await transaction.wait()
       console.log('🚀 ~ file: index.vue:149 ~ processDelegatedContribution ~ transactionRes:', transactionRes)
 
       useAlertStore().sendAlert(AlertStatuses.SUCCESS, transactionRes.transactionHash)
-      window.history.replaceState(null, '', window.location.pathname)
-      localStorage.setItem('assetId', '')
-      localStorage.setItem('userInput', '')
+      // window.history.replaceState(null, '', window.location.pathname)
+      // localStorage.setItem('assetId', '')
+      // localStorage.setItem('userInput', '')
     }
 
     async function submit() {
