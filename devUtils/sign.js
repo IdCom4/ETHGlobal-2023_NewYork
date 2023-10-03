@@ -1,6 +1,6 @@
 import {Wallet, ethers, verifyMessage} from 'ethers'
 
-const wallet = new Wallet('c4d9f01b3e9f7cfa8dfc5919a07e540227c6ba1668fb3c997d4623019aa0d4f9')
+const wallet = new Wallet()
 
 const message = 'testMessage'
 
